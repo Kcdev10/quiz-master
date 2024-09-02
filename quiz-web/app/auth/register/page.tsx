@@ -1,12 +1,18 @@
 "use client";
+import Loader from "@/components/loader";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 export default function Page() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    if (!username && !email && !password) return alert("please fill the form!");
+    setLoading(true);
     e.preventDefault();
     const formResponse = await fetch(
       `${process.env.NEXT_PUBLIC_API_DOMAIN_URL}api/v1/auth/register`,
@@ -24,11 +30,17 @@ export default function Page() {
     );
 
     const formResponseData = await formResponse.json();
-    console.log(formResponseData);
+
+    if (formResponseData.success) {
+      navigate.push("/auth/login");
+      setLoading(false);
+    }
+    setLoading(false);
+    alert(formResponseData.message);
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
         <h1 className="text-2xl font-bold mb-6 text-center">Register</h1>
         <form onSubmit={handleSubmit}>
@@ -85,6 +97,8 @@ export default function Page() {
           </button>
         </form>
       </div>
+
+      {loading && <Loader />}
     </div>
   );
 }

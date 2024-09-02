@@ -2,14 +2,17 @@
 import React, { useState } from "react";
 import Cookie from "js-cookie";
 import { useRouter } from "next/navigation";
+import Loader from "@/components/loader";
 
 export default function Page() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLoading(true);
     if (!email && !password) return alert("please fill the form!");
 
     const formResponse = await fetch(
@@ -27,8 +30,8 @@ export default function Page() {
     );
 
     const formResponseData = await formResponse.json();
-    console.log(formResponseData);
     if (formResponseData.success) {
+      navigate.push("/");
       localStorage.setItem(
         "auth_user_access_token",
         formResponseData.data.accessToken
@@ -37,13 +40,14 @@ export default function Page() {
         expires: 2,
         path: "/",
       });
-      return navigate.push("/");
+      setLoading(false);
     }
+    setLoading(false);
     alert(formResponseData.message);
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
         <h1 className="text-2xl font-bold mb-6 text-center">Login</h1>
         <form onSubmit={handleSubmit}>
@@ -85,6 +89,8 @@ export default function Page() {
           </button>
         </form>
       </div>
+
+      {loading && <Loader />}
     </div>
   );
 }

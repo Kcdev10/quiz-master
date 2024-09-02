@@ -3,9 +3,12 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
+import Loader from "./loader";
 export default function Header() {
   const [token, setToken] = useState("");
   const [render, setRender] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   const navigate = useRouter();
   useEffect(() => {
     if (window !== undefined) {
@@ -26,10 +29,14 @@ export default function Header() {
           {token && (
             <button
               onClick={() => {
+                setLoading(true);
                 localStorage.clear();
                 Cookies.remove("auth_user_access_token", { path: "/" });
                 setRender(!render);
-                navigate.push("/");
+                setTimeout(() => {
+                  setLoading(false);
+                  navigate.push("/auth/login");
+                }, 2000);
               }}
             >
               Logout
@@ -39,6 +46,8 @@ export default function Header() {
           {!token && <Link href={"/auth/register"}>Regsiter</Link>}
         </div>
       </nav>
+
+      {loading && <Loader />}
     </header>
   );
 }

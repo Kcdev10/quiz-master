@@ -4,11 +4,11 @@ import React from "react";
 export default function Hero() {
   return (
     <div className="flex items-center justify-center h-screen bg-gray-200">
-      <div className="text-center z-10 px-4">
-        <h1 className="md:text-6xl text-4xl font-bold text-blue-600">
+      <div className="text-center max-w-4xl w-full z-10 px-4">
+        <h1 className="md:text-6xl text-5xl font-bold text-blue-600">
           Welcome to QuizMaster
         </h1>
-        <p className="text-lg text-gray-600 mb-8">
+        <p className="text-lg text-gray-600 mb-8 mt-4">
           Test your knowledge with our exciting quiz challenges!
         </p>
         <Link

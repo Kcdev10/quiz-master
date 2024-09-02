@@ -75,7 +75,19 @@ export default function QuizQuestion({
                     <strong>Q:{index + 1}</strong> {question.question} <br />
                   </div>
                   <div>
-                    <strong>Your Answer:</strong> {answeredQuestions[index]}
+                    <strong className="px-1">Your Answer :</strong>
+                    <span
+                      className="text-white px-2 rounded-sm py-1"
+                      style={{
+                        background:
+                          answeredQuestions[index] == question.correct_answer
+                            ? "green"
+                            : "#e93333",
+                      }}
+                    >
+                      {" "}
+                      {answeredQuestions[index]}
+                    </span>
                   </div>
 
                   <div>
