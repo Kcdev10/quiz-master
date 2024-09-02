@@ -29,10 +29,16 @@ export async function middleware(request: NextRequest) {
     }
   }
 
+  if (cookies && !isPublicPath) {
+    if (isAuthenticateOrNot.success) {
+      return NextResponse.next();
+    }
+  }
+
   return NextResponse.next();
 }
 
 // See "Matching Paths" below to learn more
 export const config = {
-  matcher: ["/auth/login", "/auth/register", "/quiz-selection"],
+  matcher: ["/", "/auth/login", "/auth/register", "/quiz-selection"],
 };

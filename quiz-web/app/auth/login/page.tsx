@@ -27,8 +27,8 @@ export default function Page() {
     );
 
     const formResponseData = await formResponse.json();
+    console.log(formResponseData);
     if (formResponseData.success) {
-      alert(formResponseData.message);
       localStorage.setItem(
         "auth_user_access_token",
         formResponseData.data.accessToken
@@ -37,7 +37,7 @@ export default function Page() {
         expires: 2,
         path: "/",
       });
-      return navigate.push("/quiz-selection");
+      return navigate.push("/");
     }
     alert(formResponseData.message);
   };
