@@ -1,0 +1,4 @@
+/quiz-web/node_modules
+/quiz-api/node_modules
+/quiz-web/.env
+/quiz-api/.env
